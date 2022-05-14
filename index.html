@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <style>
+       .container{
+           max-width: 500px;
+           background-color: #07C3A7;
+           padding: 30px;
+           margin: auto;
+       }
+       .input{
+           margin-bottom: 10px;
+           width: 93%;
+           padding: 12px 20px;
+       }
+       .btn-green{
+           cursor:pointer;
+           background-color:#00B006;
+           padding: 10px;
+           color:#ffffff;
+           border-radius: 10px;
+           border:none;
+           transition: background-color 0.5s;
+           transition: color 0.5s;
+       }
+       .btn-green:hover{
+        background-color:#98E30A; 
+        color:black;
+       }
+       #alert{
+           color:red;
+       }
+    
+   </style>
+</head>
+<body>
+    
+
+<div class="container">
+    <form action="">
+<input class="input" type="text" id="fname" name="fname" placeholder="ชื่อจริง">
+<br>
+<input class="input" type="text" id="lname" name="lname" placeholder="นามสกุล">
+<br>
+<input class="input" type="date" id="bday" name="bday" placeholder="วันเดิด">
+<br>
+<select class="input" name="" id="sex">
+    <option value="">เลือกเพศ</option>
+    <option value="m">ชาย</option>
+    <option value="f">หญิง</option>
+</select>
+<br>
+<input class="input" type="number" min="100" max="500" id="h" name="h" placeholder="ส่วนสูง(100-500)">
+<button id="ok" class="btn-green" type="button">ลงทะเบียน</button>
+<br>
+<font id="alert"></font>
+    </form>
+</div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(".container").hide();
+    $("#alert").hide();
+    window.addEventListener('message',function(a){
+        if(a.data.action=='open'){
+            $(".container").show();
+        }else{
+            $(".container").hide();
+        }
+    });
+
+    $("#ok").click(function(){
+         let fname=$("#fname").val();
+         let lname=$("#lname").val();
+         let bday=$("#bday").val();
+         let sex=$("#sex").val();
+         let height=$("#h").val();
+        // $("#alert").html(fname);
+
+        
+         if(fname=='' || lname=='' || bday=='' || sex=="" || height=="" || height==0){
+            $("#alert").html("กรอกขอมูลให้ครบถ้วน");
+            $("#alert").show();
+         }else{
+            $("#fname").val("");
+         $("#lname").val("");
+         $("#bday").val("");
+         $("#sex").val("");
+         $("#h").val("");
+            $("#alert").html("");
+            $("#alert").hide();
+            $.post('https://tomato_identity/tomato_identity:get_input',JSON.stringify({
+            fn:fname,
+            ln:lname,
+            bd:bday,
+            s:sex,
+            h:height
+        }),function(){
+
+})
+         }
+    })
+</script>
+</body>
+</html>
